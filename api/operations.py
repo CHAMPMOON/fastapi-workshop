@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter
 from fastapi import Depends
 
-from ..models.operations import Operation, OperationKind
+from ..models.operations import Operation, OperationKind, OperationCreate
 from ..services.operations import OperationService
 
 
@@ -18,3 +18,11 @@ def get_operations(
     service: OperationService = Depends()
 ):
     return service.get_list(kind=kind)
+
+
+@router.post("/", response_model=Operation)
+def create_operation(
+    operation_date: OperationCreate, 
+    service: OperationService = Depends()
+):
+    return service.create(operation_date)

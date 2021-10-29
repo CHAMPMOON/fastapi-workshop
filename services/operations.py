@@ -6,7 +6,7 @@ from .. import tables
 
 from typing import List, Optional
 
-from ..models.operations import OperationKind
+from ..models.operations import OperationKind, OperationCreate
 
 
 class OperationService:
@@ -19,5 +19,12 @@ class OperationService:
             query = query.filter_by(kind=kind)
         operations = query.all()
         return operations
+    
+    def create(self, operation_data: OperationCreate) -> tables.Operation:
+        operation = tables.Operation(**operation_data.dict())
+        self.session.add(operation)
+        self.session.commit()
+        return operation
+
 
 
