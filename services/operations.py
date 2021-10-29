@@ -47,6 +47,11 @@ class OperationService:
         self.session.commit()
         return operation
     
+    def delete(self, operation_id: int) -> None:
+        operation = self._get(operation_id)
+        self.session.delete(operation)
+        self.session.commit()
+            
 
 
        

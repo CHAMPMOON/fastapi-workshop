@@ -1,7 +1,11 @@
 from typing import List, Optional
 
-from fastapi import APIRouter
-from fastapi import Depends
+from fastapi import (
+    APIRouter,
+    Depends,
+    Response,
+    status
+)
 
 from ..models.operations import (
     Operation, 
@@ -9,6 +13,7 @@ from ..models.operations import (
     OperationCreate, 
     OperationUpdate
 )
+
 from ..services.operations import OperationService
 
 
@@ -51,3 +56,12 @@ def update_operation(
         operation_data, 
         operation_id
     )
+
+ 
+@router.delete("/{operation_id}")
+def delete_operation(
+    operation_id: int,
+    service: OperationService = Depends()
+):
+    service.delete(operation_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
