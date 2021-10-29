@@ -6,12 +6,23 @@ from .. import tables
 
 from typing import List, Optional
 
-from ..models.operations import OperationKind, OperationCreate
+from ..models.operations import OperationKind, OperationCreate, OperationUpdate
 
 
 class OperationService:
     def __init__(self, session: Session = Depends(get_session)):
         self.session = session
+
+    def _get(self, operation_id: int) -> tables.Operation:
+        operation = (
+            self.session
+            .query(tables.Operation)
+            .filter_by(id=operation_id)
+            .first()
+        )
+        if not operation:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return operation
 
     def get_list(self, kind: Optional[OperationKind] = None) -> List[tables.Operation]:
         query = self.session.query(tables.Operation)
@@ -27,15 +38,17 @@ class OperationService:
         return operation
     
     def get(self, operation_id: int) -> tables.Operation:
-        operation = (
-            self.session
-            .query(tables.Operation)
-            .filter_by(id=operation_id)
-            .first()
-        )
-        if not operation:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return self._get(operation_id)
+    
+    def update(self, operation_data: OperationUpdate, operation_id: int) -> tables.Operation:
+        operation = self._get(operation_id)
+        for field, value in operation_data:
+            setattr(operation, field, value)
+        self.session.commit()
         return operation
+    
+
+
        
             
 
