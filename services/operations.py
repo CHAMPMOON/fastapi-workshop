@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from fastapi import Depends
+from fastapi import Depends, HTTPException, status
 
 from ..database import get_session
 from .. import tables
@@ -25,6 +25,20 @@ class OperationService:
         self.session.add(operation)
         self.session.commit()
         return operation
+    
+    def get(self, operation_id: int) -> tables.Operation:
+        operation = (
+            self.session
+            .query(tables.Operation)
+            .filter_by(id=operation_id)
+            .first()
+        )
+        if not operation:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+        return operation
+       
+            
+
 
 
 
