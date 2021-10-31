@@ -4,7 +4,7 @@ from .settings import settings
 
 uvicorn.run(
     "workshop.app:app",
-    host=settings.server_host,
-    port=settings.server_port,
+    host=settings.SERVER_HOST,
+    port=settings.SERVER_PORT,
     reload=True
 )
