@@ -46,8 +46,8 @@ class AuthService:
         try:
             payload = jwt.decode(
                 token,
-                settings.jwt_secret,
-                algorithms=[settings.jwt_algorithm]
+                settings.JWT_SECRET,
+                algorithms=[settings.JWT_ALGORITHM]
             )
         except JWTError:
             raise exception from None
@@ -69,14 +69,14 @@ class AuthService:
         payload = {
             "iat": now,
             "nbf": now,
-            "exp": now + timedelta(seconds=settings.jwt_expiration),
+            "exp": now + timedelta(seconds=settings.JWT_EXPIRATION),
             "sub": str(user_data.id),
             "user": user_data.dict()
         }
         token = jwt.encode(
              payload,
-             settings.jwt_secret,
-             algorithm=settings.jwt_algorithm
+             settings.JWT_SECRET,
+             algorithm=settings.JWT_ALGORITHM
         )
  
         return Token(access_token=token)
