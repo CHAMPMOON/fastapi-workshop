@@ -2,7 +2,8 @@ from fastapi import (
     APIRouter,
     UploadFile,
     File,
-    Depends
+    Depends,
+    BackgroundTasks
 )
 
 from fastapi.responses import StreamingResponse
@@ -18,11 +19,13 @@ router = APIRouter(
 
 @router.post("/import")
 def import_csv(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     user: User = Depends(get_current_user),
     reports_service: ReportsService = Depends()
 ):
-    reports_service.import_csv(
+    background_tasks.add_task(
+        reports_service.import_csv,
         user.id, 
         file.file
     )
