@@ -13,7 +13,8 @@ from workshop.services.auth import get_current_user
 from workshop.services.reports import ReportsService
 
 router = APIRouter(
-    prefix="/reports"
+    prefix="/reports",
+    tags=["reports"]
 )
 
 
