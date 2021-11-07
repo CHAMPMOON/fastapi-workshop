@@ -48,7 +48,7 @@ class OperationService:
         self.session.commit()
         return operation
 
-    def create_many(sekf, user_id: int, operations_data: List[OperationCreate]) -> List[tables.Operation]:
+    def create_many(self, user_id: int, operations_data: List[OperationCreate]) -> List[tables.Operation]:
         operations = [
             tables.Operation(
                 **operation_data.dict(),
