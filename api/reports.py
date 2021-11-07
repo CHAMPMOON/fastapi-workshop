@@ -8,9 +8,9 @@ from fastapi import (
 
 from fastapi.responses import StreamingResponse
 
-from workshop.models.auth import User
-from workshop.services.auth import get_current_user
-from workshop.services.reports import ReportsService
+from ..models.auth import User
+from ..services.auth import get_current_user
+from ..services.reports import ReportsService
 
 router = APIRouter(
     prefix="/reports",
